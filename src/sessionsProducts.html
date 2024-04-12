@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/table.css">
+</head>
+<body>
+    <h1>Productos de Sesiones</h1>
+    <table id="tablaProSesiones">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ID Producto</th>
+                <th>Cantidad</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyDatosProS">
+            <!-- Aquí se insertarán los datos dinámicamente -->
+        </tbody>
+    </table>
+
+    <button id="backButton">Volver</button>
+
+    <script>
+        fetch("http://localhost:3000/api/sessionProduct")
+            .then(response => response.json())
+            .then(data => {
+                let tablaBody = document.querySelector('#tablaProSesiones tbody');
+
+                // Limpiar el contenido de la tabla antes de agregar nuevos datos
+                tablaBody.innerHTML = '';
+
+                // Iterar sobre los datos y agregar filas a la tabla
+                data.forEach(sesionesPro => {
+                    let fila = document.createElement('tr');
+
+                    Object.values(sesionesPro).forEach(value => {
+                        let celda = document.createElement('td');
+                        celda.textContent = value;
+                        fila.appendChild(celda);
+                    });
+
+                    tablaBody.appendChild(fila);
+                });
+            })
+            .catch(error => {
+                console.error('Error al obtener los datos de productos sesiones:', error);
+            });
+
+            document.getElementById('backButton').addEventListener('click', function() {
+            window.history.back();
+            });
+    </script>
+
+</body>
+</html>

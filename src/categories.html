@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/table.css">
+</head>
+<body>
+    
+    <h1>Categoria</h1>
+    <table id="tablaCategoria">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Fecha de Creación</th>
+                <th>Fecha de Actualización</th>
+                <th>Fecha de Eliminación</th>
+                <th>Creado Por (ID)</th>
+                <th>Actualizado Por (ID)</th>
+                <th>Eliminado Por (ID)</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyDatosCa">
+            <!-- Aquí se insertarán los datos dinámicamente -->
+        </tbody>
+    </table>
+    
+    <button id="backButton">Volver</button>
+
+    <script>
+
+        fetch("http://localhost:3000/api/category")
+            .then(response => response.json())
+            .then(data => {
+                let tablaBody = document.querySelector('#tablaCategoria tbody');
+
+                // Limpiar el contenido de la tabla antes de agregar nuevos datos
+                tablaBody.innerHTML = '';
+
+                // Iterar sobre los datos y agregar filas a la tabla
+                data.forEach(categoria => {
+                    let fila = document.createElement('tr');
+
+                    Object.values(categoria).forEach(value => {
+                        let celda = document.createElement('td');
+                        celda.textContent = value;
+                        fila.appendChild(celda);
+                    });
+
+                    tablaBody.appendChild(fila);
+                });
+            })
+            .catch(error => {
+                console.error('Error al obtener los datos de categoria:', error);
+            });
+
+            document.getElementById('backButton').addEventListener('click', function() {
+            window.history.back();
+            });
+        </script>
+
+</body>
+</html>
